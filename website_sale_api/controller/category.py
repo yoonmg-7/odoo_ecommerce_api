@@ -11,7 +11,7 @@ class CategoryAPI(BaseAPI):
     """Controller for category-related endpoints"""
 
     @http.route(
-        "/api/v1/categories", type="http", auth="public", methods=["GET"], csrf=False
+        "/api/categories", type="http", auth="public", methods=["GET"], csrf=False
     )
     def get_categories(self, **kwargs):
         """Retrieve a list of product categories with pagination and sorting"""

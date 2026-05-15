@@ -10,4 +10,5 @@ from . import (
     website_schema,
     wishlist_schema,
     order_schema,
+    review_schema,
 )

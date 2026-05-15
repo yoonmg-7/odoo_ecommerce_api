@@ -13,4 +13,5 @@ from . import (
     website_service,
     wishlist_service,
     order_service,
+    review_service,
 )
