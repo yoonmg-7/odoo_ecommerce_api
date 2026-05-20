@@ -11,4 +11,5 @@ from . import (
     website,
     wishlist,
     order,
+    reviews,
 )
