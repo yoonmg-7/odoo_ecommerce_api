@@ -6,7 +6,7 @@
         <field name="model">product.banner</field>
         <field name="arch" type="xml">
             <list string="Product Banners">
-                <field name="image_128" widget="image"  />
+                <field name="image_1920" widget="image" options="{'size': [128, 128]}" />
                 <field name="description"/>
             </list>
         </field>
@@ -20,10 +20,10 @@
                 <sheet>
                     <div class="d-flex align-items-start gap-3">
                         <div>
-                            <label for="image_256" class="form-label me-3"/>
+                            <label for="image_1920" class="form-label me-3"/>
                             <field
-                                name="image_256"
-                                widget="image"
+                                name="image_1920"
+                                widget="image" options="{'size': [128, 128]}"
                             />
                         </div>
 
