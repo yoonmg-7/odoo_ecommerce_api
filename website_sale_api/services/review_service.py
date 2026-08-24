@@ -27,7 +27,7 @@ class ReviewService(PaginationService):
         self.website = self._get_current_website()
 
     def get_rating_comment(
-        self, kwargs: Dict[str, Any], product_template_id
+        self, product_template_id, kwargs: Dict[str, Any]
     ) -> ReviewDataResponse:
         """Retrieve a list of products with pagination and sorting"""
         self.default_domain = [
@@ -122,6 +122,7 @@ class ReviewService(PaginationService):
             rating=review["rating"],
             date=review["create_date"],
             comment=comment,
+            image=self._get_image_url("res.partner", review["partner_id"][0]),
         )
 
     def _get_product(self, product_template_id):

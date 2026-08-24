@@ -12,4 +12,5 @@ from . import (
     res_users,
     sale_order,
     shipping_status,
+    product_banner,
 )

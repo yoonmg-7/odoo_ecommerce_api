@@ -17,4 +17,5 @@ from . import (
     reviews,
     wishlist,
     ribbon,
+    banner,
 )

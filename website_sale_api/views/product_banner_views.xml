@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_product_banner_list" model="ir.ui.view">
+        <field name="name">product.banner.list</field>
+        <field name="model">product.banner</field>
+        <field name="arch" type="xml">
+            <list string="Product Banners">
+                <field name="image_128" widget="image"  />
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_banner_form" model="ir.ui.view">
+        <field name="name">product.banner.form</field>
+        <field name="model">product.banner</field>
+        <field name="arch" type="xml">
+            <form string="Product Banner">
+                <sheet>
+                    <div class="d-flex align-items-start gap-3">
+                        <div>
+                            <label for="image_256" class="form-label me-3"/>
+                            <field
+                                name="image_256"
+                                widget="image"
+                            />
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <label for="description" class="form-label"/>
+                            <field name="description"/>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="action_view_product_banner" model="ir.actions.act_window">
+            <field name="name">Product Banner</field>
+            <field name="res_model">product.banner</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first product banner
+                </p>
+                <p>
+                    Product banners can be used to display promotional images and descriptions.
+                </p>
+            </field>
+     </record>
+
+
+    <menuitem
+       action="action_view_product_banner"
+       id="banner_menus"
+       parent="website_sale.menu_catalog"
+       sequence="10"/>
+</odoo>
