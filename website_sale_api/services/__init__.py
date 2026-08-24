@@ -19,4 +19,5 @@ from . import (
     token_service,
     wishlist_service,
     ribbon_service,
+    banner_service,
 )

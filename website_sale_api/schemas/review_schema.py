@@ -17,6 +17,7 @@ class ReviewLineData:
     customer_name: str
     customer_id: int
     rating: float
+    image: str
     comment: Optional[str] = None
     date: Optional[datetime] = None
 

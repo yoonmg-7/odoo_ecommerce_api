@@ -14,4 +14,5 @@ from . import (
     profile_schema,
     review_schema,
     ribbon_schema,
+    banner_schema,
 )
