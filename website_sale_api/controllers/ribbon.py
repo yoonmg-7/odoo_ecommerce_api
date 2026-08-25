@@ -3,6 +3,8 @@
 # pylint: disable=import-error,too-few-public-methods
 from odoo import http
 from odoo.exceptions import ValidationError
+
+from ..services.api_key_service import ApiKeyService
 from ..services.ribbon_service import RibbonService
 from .base import BaseAPI
 
@@ -17,6 +19,7 @@ class RibbonController(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     def get_ribbons(self):
         """Fetch all product ribbons."""
 

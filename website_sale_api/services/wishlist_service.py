@@ -42,9 +42,7 @@ class WishlistService(BaseService):
             website=self.website
         )._get_combination_info_variant()["price"]
 
-        wishlist = request.env["product.wishlist"]
-
-        wish = wishlist._add_to_wishlist(
+        wish = self._get_model()._add_to_wishlist(
             self.website.pricelist_ids[0].id,
             self.website.currency_id.id,
             self.website.id,

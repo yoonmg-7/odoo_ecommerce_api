@@ -1,7 +1,7 @@
 """RibbonService"""
 
-from .base_service import BaseService
 from ..schemas.banner_schema import BannerSchema
+from .base_service import BaseService
 
 
 class BannerService(BaseService):

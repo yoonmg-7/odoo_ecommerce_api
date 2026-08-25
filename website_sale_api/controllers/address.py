@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 from odoo.http import request
 
 from ..services.address_service import ShippingAddressService
+from ..services.api_key_service import ApiKeyService
 from ..services.token_service import JWTService
 from .base import BaseAPI
 
@@ -22,6 +23,7 @@ class AddressAPI(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_state(self, cid):
         """Get the state of the authenticated user"""
@@ -34,6 +36,7 @@ class AddressAPI(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_township(self, cid):
         """Get the state of the authenticated user"""
@@ -44,6 +47,7 @@ class AddressAPI(BaseAPI):
     @http.route(
         "/api/my/address", type="http", auth="public", methods=["GET"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_shipping_address(self):
         """Retrieve the authenticated user's shipping address information"""
@@ -53,6 +57,7 @@ class AddressAPI(BaseAPI):
     @http.route(
         "/api/my/address", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def create_shipping_address(self):
         """Create a new shipping address for the authenticated user"""
@@ -71,6 +76,7 @@ class AddressAPI(BaseAPI):
         methods=["PUT"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def update_shipping_address(self, address_id):
         """Update the authenticated user's shipping address information"""
@@ -95,6 +101,7 @@ class AddressAPI(BaseAPI):
         methods=["DELETE"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def delete_shipping_address(self, partner_id):
         """Update the authenticated user's shipping address information"""
@@ -113,6 +120,7 @@ class AddressAPI(BaseAPI):
     @http.route(
         "/api/order/address", type="http", auth="public", methods=["PUT"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def update_order_address(self):
         """Update Shipping & Billing address of order"""

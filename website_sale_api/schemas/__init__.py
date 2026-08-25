@@ -3,6 +3,7 @@
 from . import (
     address_schema,
     auth_schema,
+    banner_schema,
     cart_schema,
     category_schema,
     delivery_method_schema,
@@ -14,5 +15,4 @@ from . import (
     profile_schema,
     review_schema,
     ribbon_schema,
-    banner_schema,
 )

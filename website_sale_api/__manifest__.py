@@ -15,6 +15,7 @@
         "website_sale_wishlist",
     ],
     "data": [
+        "data/otpcode_template_data.xml",
         "security/ir.model.access.csv",
         "views/res_township_views.xml",
         "views/res_partner_views.xml",

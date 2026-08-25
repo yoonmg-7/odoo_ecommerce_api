@@ -3,6 +3,7 @@
 from . import (
     address,
     authentication,
+    banner,
     base,
     cart,
     category,
@@ -15,7 +16,6 @@ from . import (
     product,
     profile,
     reviews,
-    wishlist,
     ribbon,
-    banner,
+    wishlist,
 )

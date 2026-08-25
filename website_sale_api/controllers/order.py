@@ -6,6 +6,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.order_service import OrderService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -21,6 +22,7 @@ class OrderController(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_orders(self, **kwargs):
         """Retrieve a list of orders with pagination and sorting"""
@@ -38,6 +40,7 @@ class OrderController(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_order(self, order_id):
         """Retrieve an order with pagination and sorting"""

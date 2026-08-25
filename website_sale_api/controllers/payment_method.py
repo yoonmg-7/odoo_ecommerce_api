@@ -5,6 +5,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.payment_method_service import PaymentMethodService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -14,8 +15,9 @@ class PaymentMethodController(BaseAPI):
     """Payment Method API Controller"""
 
     @http.route(
-        "/api/payment-methods", methods=["GET"], type="http", auth="public", csrf=False
+        "/api/payment_methods", methods=["GET"], type="http", auth="public", csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_payment_methods(self):
         """Get all available payment methods selected by delivery method"""

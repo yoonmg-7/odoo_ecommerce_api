@@ -1,7 +1,7 @@
 """RibbonService"""
 
-from .base_service import BaseService
 from ..schemas.ribbon_schema import BadgeSchema
+from .base_service import BaseService
 
 
 class RibbonService(BaseService):

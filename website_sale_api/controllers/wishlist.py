@@ -8,6 +8,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.token_service import JWTService
 from ..services.wishlist_service import WishlistService
 from .base import BaseAPI
@@ -23,6 +24,7 @@ class WishlistAPI(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_wishlists(self):
         """Fetch wishlist items for the current user"""
@@ -36,6 +38,7 @@ class WishlistAPI(BaseAPI):
         methods=["POST"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def add_to_wishlist(self):
         """Create a wishlist item for the current user"""
@@ -59,6 +62,7 @@ class WishlistAPI(BaseAPI):
         methods=["DELETE"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def remove_from_wishlist(self, wishlist_id: int):
         """Delete a wishlist item for the current user"""

@@ -7,6 +7,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.delivery_method_service import DeliveryMethodService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -16,8 +17,9 @@ class DeliveryMethodAPI(BaseAPI):
     """Controller class for handling delivery method related API endpoints"""
 
     @http.route(
-        "/api/delivery-methods", type="http", auth="public", methods=["GET"], csrf=False
+        "/api/delivery_methods", type="http", auth="public", methods=["GET"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_shipping_methods(self):
         """Endpoint to retrieve available shipping methods"""
@@ -32,12 +34,13 @@ class DeliveryMethodAPI(BaseAPI):
             return self._error(message=str(e), code=400)
 
     @http.route(
-        "/api/delivery-methods",
+        "/api/delivery_methods",
         type="http",
         auth="public",
         methods=["POST"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def set_shipping_method(self):
         """Endpoint to retrieve available shipping methods"""

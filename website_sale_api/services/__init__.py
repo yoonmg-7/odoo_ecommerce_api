@@ -3,9 +3,10 @@
 from . import (
     address_service,
     auth_service,
+    banner_service,
     base_service,
     cart_service,
-    categroy_service,
+    category_service,
     checkout_service,
     delivery_method_service,
     invoice_service,
@@ -16,8 +17,7 @@ from . import (
     product_variant_service,
     profile_service,
     review_service,
+    ribbon_service,
     token_service,
     wishlist_service,
-    ribbon_service,
-    banner_service,
 )

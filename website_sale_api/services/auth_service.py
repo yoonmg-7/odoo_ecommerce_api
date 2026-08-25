@@ -1,14 +1,20 @@
 """Authentication and user management service for the e-commerce API."""
 
-# pylint:disable=import-error,broad-exception-caught
+# pylint:disable=import-error,broad-exception-caught,protected-access
 import json
 
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from .base_service import BaseService
 
-class AuthService:
+
+class AuthService(BaseService):
     """Service for handling user authentication, registration, and profile management"""
+
+    def __init__(self):
+        super().__init__()
+        self.model_name = "res.users"
 
     def authenticate_user(self):
         """Authenticate user and return user record"""
@@ -21,26 +27,63 @@ class AuthService:
 
     def create_user(self):
         """Create a new portal user and authenticate"""
-        try:
-            data = json.loads(request.httprequest.data)
-            self._create_user(data)
-            auth = self._authenticate(data["login"], data["password"])
-            return {"uid": auth["uid"], "login": data["login"]}
-        except Exception as e:
-            return ValidationError(str(e))
+
+        data = json.loads(request.httprequest.data)
+        self._create_user(data)
+        auth = self._authenticate(data["login"], data["password"])
+        return {"uid": auth["uid"], "login": data["login"]}
+
+    def request_code(self):
+        """Request code"""
+        data = json.loads(request.httprequest.data)
+        user = self._validate_user(data.get("login"))
+        user.create_reset_code()
+        return {"message": f"OTP code is sent to this email {data['login']}"}
+
+    def check_otp_password(self):
+        """Request code and check otp password"""
+        data = json.loads(request.httprequest.data)
+        user = self._validate_user(data.get("login"))
+        valid, message = user.is_reset_code_valid(data.get("code"))
+        if valid:
+            return {"message": message}
+        raise ValidationError(message)
+
+    def reset_user_password(self):
+        """Reset user password"""
+        data = json.loads(request.httprequest.data)
+        user = self._validate_user(data.get("login"))
+        user._change_password(data["password"])
+        return {"message": "Password changed successfully"}
+
+    def _validate_user(self, login):
+        """Validate user exists and return user"""
+        user = self._get_user_by_login(login)
+        if not user:
+            raise ValidationError("User does not exist")
+        return user
+
+    def _get_user_by_login(self, login):
+        """Helper method to get user by login/email"""
+        self.default_domain = [("login", "=", login)]
+        user = self.search()
+        return user
+
+    def _validate_user_exists(self, login):
+        """Helper method to validate user exists"""
+        user = self._get_user_by_login(login)
+        if not user:
+            return None, {"message": "User does not exist"}
+        return user, None
 
     def _create_user(self, data):
         """Create a new user"""
-        return (
-            request.env["res.users"]
-            .sudo()
-            .signup(
-                {
-                    "name": data["name"],
-                    "login": data["login"],
-                    "password": data["password"],
-                }
-            )
+        return self._get_model().signup(
+            {
+                "name": data["name"],
+                "login": data["login"],
+                "password": data["password"],
+            }
         )
 
     def _authenticate(self, login, password):

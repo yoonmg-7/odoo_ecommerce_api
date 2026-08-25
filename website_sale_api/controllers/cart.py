@@ -5,6 +5,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.cart_service import CartService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -14,6 +15,7 @@ class CartController(BaseAPI):
     """Cart API Controller"""
 
     @http.route("/api/cart", methods=["GET"], type="http", auth="public", csrf=False)
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def get_cart(self):
         """Get current cart details"""
@@ -30,6 +32,7 @@ class CartController(BaseAPI):
             )
 
     @http.route("/api/cart", methods=["POST"], type="http", auth="public", csrf=False)
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def add_to_cart(self):
         """Add item to cart"""
@@ -50,6 +53,7 @@ class CartController(BaseAPI):
         auth="public",
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def delete_cart_item(self, line_id):
         """Delete item from cart"""

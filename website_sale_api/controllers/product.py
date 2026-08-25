@@ -5,6 +5,7 @@
 from odoo import http
 from odoo.exceptions import ValidationError
 
+from ..services.api_key_service import ApiKeyService
 from ..services.product_service import ProductService
 from ..services.product_variant_service import ProductVariantService
 from .base import BaseAPI
@@ -16,6 +17,7 @@ class ProductAPI(BaseAPI):
     @http.route(
         "/api/products", type="http", auth="public", methods=["GET"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     def get_products(self, **kwargs):
         """Retrieve a list of products with pagination and sorting"""
         result = ProductService().get_products(kwargs)
@@ -29,6 +31,7 @@ class ProductAPI(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     def get_product(self, product_id):
         """Retrieve product details by ID"""
         try:

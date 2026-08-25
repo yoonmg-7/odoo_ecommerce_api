@@ -3,10 +3,11 @@ registration, profile retrieval, and password management."""
 
 # pylint:disable=too-few-public-methods,import-error,broad-exception-caught
 from odoo import http
-from odoo.exceptions import AccessDenied, ValidationError
+from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.http import request
 
 from ..schemas.auth_schema import AuthResponse
+from ..services.api_key_service import ApiKeyService
 from ..services.auth_service import AuthService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -18,6 +19,7 @@ class AuthController(BaseAPI):
     @http.route(
         "/api/auth/login", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     def login(self):
         """Authenticate user and return JWT token"""
         user = AuthService().authenticate_user()
@@ -31,6 +33,7 @@ class AuthController(BaseAPI):
     @http.route(
         "/api/auth/register", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     def register(self):
         """Create a new user and return JWT token"""
         try:
@@ -45,12 +48,68 @@ class AuthController(BaseAPI):
             )
         except ValidationError as e:
             return self._error(message=str(e), code=400)
+        except UserError as e:
+            return self._error(message=str(e), code=400)
+        except Exception as e:
+            return self._error(message=str(e), code=500)
+
+    @http.route(
+        "/api/auth/request_reset_password",
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+    )
+    @ApiKeyService.api_key_required()
+    def request_reset_code(self):
+        """Create a new user and return JWT token"""
+        try:
+            code = AuthService().request_code()
+
+            return self._success(code)
+        except ValidationError as e:
+            return self._error(message=str(e), code=400)
+        except Exception as e:
+            return self._error(message=str(e), code=500)
+
+    @http.route(
+        "/api/auth/reset_password",
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+    )
+    @ApiKeyService.api_key_required()
+    def reset_password(self):
+        """Create a new user and return JWT token"""
+        try:
+            msg = AuthService().reset_user_password()
+
+            return self._success(msg)
+        except ValidationError as e:
+            return self._error(message=str(e), code=400)
+        except Exception as e:
+            return self._error(message=str(e), code=500)
+
+    @http.route(
+        "/api/auth/otp_verity", type="http", auth="public", methods=["POST"], csrf=False
+    )
+    @ApiKeyService.api_key_required()
+    def verify_otp(self):
+        """Verify OTP code to change user password"""
+        try:
+            msg = AuthService().check_otp_password()
+
+            return self._success(msg)
+        except ValidationError as e:
+            return self._error(message=str(e), code=400)
         except Exception as e:
             return self._error(message=str(e), code=500)
 
     @http.route(
         "/api/auth/logout", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def logout(self):
         """Logout endpoint"""
@@ -59,6 +118,7 @@ class AuthController(BaseAPI):
     @http.route(
         "/api/auth/refresh", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required(skip_expiry=True)
     def refresh_token(self):
         """Refresh JWT token"""
@@ -75,12 +135,13 @@ class AuthController(BaseAPI):
             return self._error(message=str(e), code=400)
 
     @http.route(
-        "/api/auth/change-password",
+        "/api/auth/change_password",
         type="http",
         auth="public",
         methods=["POST"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def change_password(self):
         """Change user password"""

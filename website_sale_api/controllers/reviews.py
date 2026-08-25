@@ -7,6 +7,7 @@ from odoo import http
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+from ..services.api_key_service import ApiKeyService
 from ..services.review_service import ReviewService
 from ..services.token_service import JWTService
 from .base import BaseAPI
@@ -22,6 +23,7 @@ class ReviewController(BaseAPI):
         methods=["GET"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     def get_reviews(self, product_template_id, **kwargs):
         """Fetch reviews for a given product template"""
 
@@ -41,6 +43,7 @@ class ReviewController(BaseAPI):
         methods=["POST"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def post_rating(self, product_template_id):
         """Fetch reviews for a given product template"""
@@ -63,6 +66,7 @@ class ReviewController(BaseAPI):
         methods=["PUT"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def update_rating(self, rating_id):
         """Fetch reviews for a given product template"""
@@ -85,6 +89,7 @@ class ReviewController(BaseAPI):
         methods=["DELETE"],
         csrf=False,
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def delete_rating(self, rating_id):
         """Fetch reviews for a given product template"""

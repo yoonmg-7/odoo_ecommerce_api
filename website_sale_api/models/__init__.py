@@ -3,6 +3,7 @@
 from . import (
     delivery_carrier,
     payment_method,
+    product_banner,
     product_template,
     product_wishlist,
     rating,
@@ -12,5 +13,4 @@ from . import (
     res_users,
     sale_order,
     shipping_status,
-    product_banner,
 )
