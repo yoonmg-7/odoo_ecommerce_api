@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.http import request
 
 from ..services.checkout_service import CheckoutService
+from ..services.api_key_service import ApiKeyService
 from ..services.token_service import JWTService
 from .base import BaseAPI
 
@@ -17,6 +18,7 @@ class CheckoutAPI(BaseAPI):
     @http.route(
         "/api/checkout", type="http", auth="public", methods=["POST"], csrf=False
     )
+    @ApiKeyService.api_key_required()
     @JWTService.jwt_required()
     def process_checkout(self):
         """Endpoint to retrieve available shipping methods"""
