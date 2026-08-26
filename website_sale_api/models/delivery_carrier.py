@@ -1,7 +1,7 @@
 """Add township for the delivery carrier model."""
 
 # pylint:disable=import-error,too-few-public-methods, protected-access
-from odoo import fields, models
+from odoo import api, Command, fields, models
 from odoo.addons.website_sale.controllers.delivery import Delivery
 
 
@@ -31,3 +31,30 @@ class DeliveryCarrier(models.Model):
             )
 
         return result
+
+    def rate_shipment(self, order):
+        """Modify shipment rate to add amount of township for delivery carrier"""
+        result = super().rate_shipment(order)
+
+        if result.get("success", False) and order.partner_shipping_id:
+            # Add township price
+            township_price = order.partner_shipping_id.township_id.price or 0.0
+            result["price"] += township_price
+            # Update carrier_price to reflect the change
+            if "carrier_price" in result:
+                result["carrier_price"] += township_price
+
+        return result
+
+    def _match_address(self, partner):
+        self.ensure_one()
+        if self.township_ids and partner.township_id not in self.township_ids:
+            return False
+        return super()._match_address(partner)
+
+    @api.onchange("country_ids")
+    def _onchange_country_ids(self):
+        # Call parent method first
+        super()._onchange_country_ids()
+        # Clear all townships if no countries or no states
+        self.township_ids = [Command.clear()]
