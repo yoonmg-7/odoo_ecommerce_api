@@ -47,6 +47,7 @@ class DetailProductData:
     """Schema for individual product data"""
 
     id: int
+    alternative_products: List[int]
     variants: List[ProductVariantData] = field(default_factory=list)
 
 

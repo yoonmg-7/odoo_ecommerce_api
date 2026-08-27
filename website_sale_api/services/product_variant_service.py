@@ -4,6 +4,7 @@
 from typing import List
 
 from odoo.exceptions import ValidationError
+from odoo.tools import html2plaintext
 
 from ..schemas.product_schema import DetailProductData, ProductVariantData
 from .product_service import ProductService
@@ -27,6 +28,7 @@ class ProductVariantService(ProductService):
             "product_template_attribute_value_ids",
             "product_tmpl_id",
             "allow_out_of_stock_order",
+            "alternative_product_ids",
             "image_1024",
         ]
 
@@ -42,6 +44,7 @@ class ProductVariantService(ProductService):
 
         return DetailProductData(
             id=product["id"],
+            alternative_products=product["alternative_product_ids"].ids,
             variants=self.get_variants_by_template_id(product_id),
         )
 
@@ -63,7 +66,7 @@ class ProductVariantService(ProductService):
         return ProductVariantData(
             id=variant.id,
             name=variant.display_name,
-            description=variant.description,
+            description=html2plaintext(variant.description_ecommerce),
             allow_out_of_stock_order=variant.allow_out_of_stock_order,
             price=variant.lst_price,
             sale_price=pricelist_info["price"],
