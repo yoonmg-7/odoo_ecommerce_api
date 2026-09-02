@@ -1,7 +1,6 @@
 """Controller for user profile related operations"""
 
 # pylint:disable=too-few-public-methods,import-error
-import json
 
 from odoo import http
 from odoo.http import request
@@ -26,20 +25,6 @@ class ProfileController(BaseAPI):
         user = request.authenticated_user
         return self._success(
             data=ProfileService().get_profile(user=user), wrap_in_data=True
-        )
-
-    @http.route(
-        "/api/auth/profile", methods=["PUT"], type="http", auth="none", csrf=False
-    )
-    @ApiKeyService.api_key_required()
-    @JWTService.jwt_required()
-    def update_profile(self):
-        """Update current user profile"""
-
-        user = request.authenticated_user
-        data = json.loads(request.httprequest.data or "{}")
-        return self._success(
-            ProfileService().update_profile_value(user=user, data=data)
         )
 
     @http.route(

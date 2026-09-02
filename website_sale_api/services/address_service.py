@@ -89,7 +89,8 @@ class ShippingAddressService(BaseService):
 
     def update_address(self, user, partner_id, data):
         """Update the user's shipping address with the provided information"""
-        if partner_id not in user.child_ids.ids:
+        partner_ids = user.child_ids.ids + [user.partner_id.id]
+        if partner_id not in partner_ids:
             raise ValidationError("Partner not allow")
 
         address = self.get_record_by_id(partner_id)

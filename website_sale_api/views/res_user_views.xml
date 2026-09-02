@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_users_mobiletoken_inherit" model="ir.ui.view">
+        <field name="name">res.users.mobiletoken.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form//page[@name='page_security']" position="after">
+                <page name="mobile_token" string="Mobile Token">
+                    <group>
+                        <group name="left_mobile_token">
+                            <field name="mobile_device_token" readonly="1"/>
+                            <field name="last_login" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

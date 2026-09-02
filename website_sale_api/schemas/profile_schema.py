@@ -15,7 +15,10 @@ class Profile:
     phone: Optional[str] = None
     street: Optional[str] = None
     city: Optional[str] = None
+    partner_id: Optional[int] = None
     country_id: Optional[int] = None
+    state_id: Optional[int] = None
+    township_id: Optional[int] = None
     company_id: Optional[int] = None
     company_name: Optional[str] = None
     image_url: Optional[str] = None
@@ -24,8 +27,3 @@ class Profile:
 @dataclass
 class ProfileResponse(Profile, UserData):
     """Response schema for user profile endpoint combining UserData and Profile"""
-
-
-@dataclass
-class UpdateProfile(Profile):
-    """Response schema for update profile endpoint"""

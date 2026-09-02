@@ -17,6 +17,13 @@ class ResUsers(models.Model):
     reset_code_used = fields.Boolean(
         string="Reset Code Used", default=False, copy=False
     )
+    mobile_device_token = fields.Char(
+        string="Mobile Device Token",
+        help="Store mobile device token for each user to push notifications",
+    )
+    last_login = fields.Datetime(
+        string="Last Login", help="Store last login time by mobile user"
+    )
 
     def _can_return_content(self, field_name=None, access_token=None):
         """Field to allow to read without login"""

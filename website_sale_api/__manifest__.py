@@ -26,6 +26,7 @@
         "views/sale_order_views.xml",
         "views/sale_portal_templates.xml",
         "views/product_banner_views.xml",
+        "views/res_user_views.xml",
     ],
     "assets": {
         "web.assets_frontend": [

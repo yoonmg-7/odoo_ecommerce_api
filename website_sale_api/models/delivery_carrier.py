@@ -1,7 +1,7 @@
 """Add township for the delivery carrier model."""
 
 # pylint:disable=import-error,too-few-public-methods, protected-access
-from odoo import api, Command, fields, models
+from odoo import Command, api, fields, models
 from odoo.addons.website_sale.controllers.delivery import Delivery
 
 

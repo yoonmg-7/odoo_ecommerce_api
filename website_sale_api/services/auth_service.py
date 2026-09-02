@@ -2,6 +2,7 @@
 
 # pylint:disable=import-error,broad-exception-caught,protected-access
 import json
+from datetime import datetime
 
 from odoo.exceptions import ValidationError
 from odoo.http import request
@@ -21,6 +22,7 @@ class AuthService(BaseService):
         try:
             data = json.loads(request.httprequest.data)
             auth = self._authenticate(data["login"], data["password"])
+            self.update_mobile_token(data, auth["uid"])
             return {"uid": auth["uid"], "login": data["login"]}
         except Exception:
             return False
@@ -31,7 +33,19 @@ class AuthService(BaseService):
         data = json.loads(request.httprequest.data)
         self._create_user(data)
         auth = self._authenticate(data["login"], data["password"])
+        self.update_mobile_token(data, auth["uid"])
         return {"uid": auth["uid"], "login": data["login"]}
+
+    def update_mobile_token(self, data, uid):
+        """Update mobile token"""
+        if data.get("mobile_device_token"):
+            user = self.get_record_by_id(uid)
+            user.sudo().write(
+                {
+                    "mobile_device_token": data["mobile_device_token"],
+                    "last_login": datetime.now(),
+                }
+            )
 
     def request_code(self):
         """Request code"""
